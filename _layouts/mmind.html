@@ -1,0 +1,196 @@
+---
+layout: default
+---
+<style>
+#opciones {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+    background-color: #8C3449;
+    border: 2px solid #D991A2;
+    margin: 0px 0px 30px 0px;
+}
+#opciones ul {
+    columns: 2;
+    -webkit-columns: 2;
+    -moz-columns: 2;
+    list-style:none;
+    margin: 0 0 0 0;
+}
+
+#opciones li {
+  border: 1px dotted #D991A2;
+}
+
+#opciones li {
+  text-decoration: none;
+  color: #FFD1DC;
+}
+
+/* unvisited link */
+#opciones li:link {
+  color: #FFD1DC;
+}
+
+/* visited link */
+#opciones li:visited {
+  color: #FFD1DC;
+}
+
+/* mouse over link */
+#opciones li:hover {
+  color: blue;
+  background-color: #D1DCFF;
+}
+
+/* selected link */
+#opciones li:active {
+  color: blue;
+}
+
+.try {
+  border: 3px solid #D991A2;
+
+}
+.opcion {
+  font-size: 1em;
+}
+</style>
+
+<h1>¿Por qué se enfadó tu novia?</h1>
+<div id="opciones">
+<ul>
+{% for opcion in site.data.opcs %}
+  <li onclick="add({{ opcion.id }})">
+    <span class="opcion">
+      {{ opcion.id }} -- {{ opcion.texto }}
+    </span>
+  </li>
+{% endfor %}
+</ul>
+</div>
+<div id="intro"></div>
+<div class="try" id="intento1"></div>
+<div class="try" id="intento2"></div>
+<div class="try" id="intento3"></div>
+<div class="try" id="intento4"></div>
+<div class="try" id="intento5"></div>
+<div class="try" id="intento6"></div>
+<div class="try" id="intento7"></div>
+<div class="try" id="intento8"></div>
+<div class="try" id="intento9"></div>
+<div class="try" id="intento10"></div>
+
+<script type="text/javascript">
+    var intros = {{ site.data.intro | jsonify }};
+    var opcios = {{ site.data.opcs  | jsonify }};
+    var respus = {{ site.data.resps | jsonify }};
+    var intent = 1;
+    var elto = 0;
+    var resp = [];
+    var secr = [];
+
+    // Retorna un entero aleatorio entre min (incluido) y max (excluido)
+    // ¡Usando Math.round() te dará una distribución no-uniforme!
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+    function intro(datos) {
+        let long = datos.length;
+        let num = getRandomInt(0, long);
+
+        document.querySelector("#intro").innerText=datos[num].texto;
+    }
+
+    function opciones(datos) {
+
+    }
+
+    function get() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+               // Typical action to be performed when the document is ready:
+              console.log(xhttp.responseText);
+            }
+        };
+        xhttp.open("GET", "https://4frq.com/sr/?q=7xWM", true);
+        xhttp.send();
+    }
+
+    function generarSecretito() {
+      //get();
+      secr=[];
+      for(let i = 0; i<4; i++) {
+        secr.push(getRandomInt(0, 6));
+      }
+      console.log(secr);
+    }
+
+    function add(id) {
+        let contenedor = document.querySelector("#intento" + intent);
+        if(elto<4) {
+          contenedor.innerText += "-- (" + id + ") " + opcios[id-1].texto + "\n";
+          resp.push(id-1);
+          elto++;
+        }
+        if(elto == 4) {
+          elto = 0;
+          intent++;
+          resolver(resp);
+          resp = [];
+          contenedor = document.querySelector("#intento" + intent);
+          contenedor.innerText = "INTENTO " + intent + "\n\n";
+        }
+    }
+
+    function resolver(matriz) {
+      let tmpSecr = secr.slice();
+      let contenedor = document.querySelector("#intento" + (intent-1));
+      let idResp = str(getHints(tmpSecr, matriz));
+      //contenedor.innerText += "\n\n" + JSON.stringify(matriz);
+      //contenedor.innerText += "\n\n" + idResp;
+      for(let i = 0; i<respus.length; i++) {
+        if(respus[i].id == idResp) {
+          contenedor.innerText += "\n\n" + respus[i].texto;
+          contenedor.innerText += "\n" + respus[i].insulto;
+          break;
+        }
+      }
+      console.log(secr);
+    }
+
+    function getHints(secretCombination, userCombination) {
+      var hints = {black: 0, white: 0},
+      // secretCombination = secret.slice(),
+      // userCombination   = combination.slice(),
+      i, x;
+
+      //check for correct positions
+      for (i = 0; i < 4; i++) {
+        if (userCombination[i] === secretCombination[i]) {
+          hints.black += 1;
+          secretCombination[i] = userCombination[i] = null;
+        }
+      }
+      //check for incorrect positions
+      for (i = 0; i < 4; i++) {
+        for (x = 0; x < 4; x++) {
+          if(userCombination[i] && secretCombination[x]) {
+            if (userCombination[i] === secretCombination[x]) {
+              hints.white += 1;
+              secretCombination[x] = userCombination[i] = null;
+            }
+          }
+        }
+      }
+
+      return hints;
+    }
+
+    function str(objHint) {
+      return objHint.white + "B" + objHint.black + "C";
+    }
+    generarSecretito();
+    intro(intros);
+</script>
