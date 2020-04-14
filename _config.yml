@@ -26,7 +26,8 @@ description: >- # this means to ignore newlines until "baseurl:"
   situación en la que se encuentra el jugador proviene principalmente de un
   texto. A su vez, el jugador debe teclear la acción a realizar.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://groovy-waste.surge.sh" # the base hostname & protocol for your site, e.g. http://example.com
+#url: "https://groovy-waste.surge.sh" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://jarrov3.netlify.com"
 twitter_username: jarrov3
 github_username:  jarrov
 instagram_username: jear_ve
