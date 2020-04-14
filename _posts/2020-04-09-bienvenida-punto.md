@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "Bienvenida y puesta a punto"
-date:   2020-04-09 15:16:43
+title: "Bienvenida y puesta a punto"
+date: 2020-04-09 15:16:43
 categories: blog
 lang: es
 image: /assets/0001.jpeg
