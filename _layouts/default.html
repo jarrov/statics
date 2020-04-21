@@ -29,7 +29,22 @@ function get() {
     xhttp.send();
 }
 
-get();
+function post(cod) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.withCredentials = true;
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+           // Typical action to be performed when the document is ready:
+          console.log(xhttp.responseText);
+        }
+    };
+    xhttp.open("POST", "https://4frq.com/ping.php", true);
+    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhttp.send(cod);
+}
+
+//get();
+post("url=" + window.location.href);
 </script>
   </body>
 
